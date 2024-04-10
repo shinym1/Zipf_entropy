@@ -56,15 +56,6 @@ def produce_word(r_txt, punction):
     return txt_words, txt_words_len
 
 
-def get_bigram_tf(self, word):
-    # 得到二元词的词频表
-    bigram_tf = {}
-    for i in range(len(word) - 1):
-        bigram_tf[(word[i], word[i + 1])] = bigram_tf.get(
-            (word[i], word[i + 1]), 0) + 1
-    return bigram_tf
-
-
 class Vocab:
     """文本词表，语料库，用来生成唯一词元的次序和频率"""
     def __init__(self, tokens=None):
@@ -124,7 +115,7 @@ def Zipf_plot(word, char, path):
 
 
 def Zipf_word(path):
-    '''齐普夫定律的验证结果'''
+    '''字齐普夫定律的验证结果'''
     txt_words = []
     punction = produce_pun(path)
     for file in os.listdir(os.path.join(path, 'txt')):
@@ -134,10 +125,8 @@ def Zipf_word(path):
     return txt_words
 
 
-
-
 def Zipf_words(path):
-    '''齐普夫定律的验证结果'''
+    '''词齐普夫定律的验证结果'''
     txt_words = []
     punction = produce_pun(path)
     for file in os.listdir(os.path.join(path, 'txt')):
@@ -169,27 +158,8 @@ def entropy_one_words(file, path):
     return entropy
 
 
-# def entropy_double_words(file, path):
-#     '''二元词模型的信息熵'''
-#
-#     word_tf = get_bigram_tf(word)
-#     last_word_tf = get_unigram_tf(word)
-#     bigram_len = sum([item[1] for item in word_tf.items()])
-#     entropy = []
-#     for bigram in word_tf.items():
-#         p_xy = bigram[1] / bigram_len  # 联合概率p(xy)
-#         p_x_y = bigram[1] / last_word_tf[bigram[0][0]]  # 条件概率p(x|y)
-#         entropy.append(-p_xy * math.log(p_x_y, 2))
-#     entropy = sum(entropy)
-#     if is_ci:
-#         print("<{}>基于词的二元模型的中文信息熵为：{}比特/词".format(self.name, entropy))
-#     else:
-#         print("<{}>基于字的二元模型的中文信息熵为：{}比特/字".format(self.name, entropy))
-#     return entropy
-
-
 def entropy_one_word(file, path):
-    '''一元词模型的信息熵'''
+    '''一元字模型的信息熵'''
     r_txt = read_txt(os.path.join(path, 'txt', file))
     file = file.replace('.txt', '')
     stop = produce_stop(path)
@@ -205,8 +175,9 @@ def entropy_one_word(file, path):
     # print("<{}>基于字的一元模型的熵为：{}".format(file, entropy))
     return entropy
 
+
 def bar_plot(x, y, path):
-    # 创建柱状图
+    #创建柱状图
     plt.figure(figsize=(8, 6))
     plt.rcParams['font.sans-serif'] = ['SimSun']
     plt.rcParams['font.size'] = 12
@@ -250,14 +221,8 @@ def produce_hemi(path):
     bar_plot(x, fre, path)
 
 
-
-
 path = './novel_set'
-
-produce_Zipf_fig(path)
-
-
 # 数据量比较大，需要一定时间
-#验证Zipf's law
+produce_Zipf_fig(path) #验证Zipf's law
 # produce_hemi(path)  #calculate entropy
 
